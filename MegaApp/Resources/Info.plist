@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>$(PRODUCT_NAME)</string>
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleVersion</key>
+    <string>$(CURRENT_PROJECT_VERSION)</string>
+    <key>CFBundleShortVersionString</key>
+    <string>$(MARKETING_VERSION)</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>UILaunchScreen</key>
+    <dict/>
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+    </array>
+    <!-- Background modes: location keeps GPS running when screen is off; audio lets AVSpeechSynthesizer announce mile markers -->
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>location</string>
+        <string>audio</string>
+    </array>
+    <!-- Location permissions -->
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>MegaApp uses your location during outdoor runs to track your route, distance, and pace. Background access keeps tracking active when the screen is off.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>MegaApp uses your location to track outdoor runs.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>MegaApp uses your location in the background during outdoor runs so tracking continues when your screen is off.</string>
+    <!-- Microphone — Cartly voice pantry updates -->
+    <key>NSMicrophoneUsageDescription</key>
+    <string>MegaApp uses the microphone so you can update your pantry with voice commands.</string>
+    <!-- OpenAI API key injected from xcconfig via build setting -->
+    <key>OPENAI_API_KEY</key>
+    <string>$(OPENAI_API_KEY)</string>
+    <!-- Kroger proxy base URL — localhost for dev, update for production -->
+    <key>KROGER_PROXY_URL</key>
+    <string>http://localhost:3001</string>
+</dict>
+</plist>

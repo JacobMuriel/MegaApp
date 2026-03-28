@@ -1,0 +1,21 @@
+# API keys — never commit
+MegaApp.xcconfig
+
+# macOS
+.DS_Store
+
+# Xcode derived data & build products
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Node (Kroger proxy)
+node_modules/
+.env
+server/.env

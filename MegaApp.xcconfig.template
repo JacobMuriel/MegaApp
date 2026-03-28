@@ -1,0 +1,5 @@
+// MegaApp.xcconfig.template
+// Copy this file to MegaApp.xcconfig and fill in real values.
+// MegaApp.xcconfig is git-ignored; this template IS committed.
+
+OPENAI_API_KEY = your_openai_api_key_here

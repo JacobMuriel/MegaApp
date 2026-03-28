@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Background location access is declared via UIBackgroundModes in Info.plist.
+         No special entitlement is required for CLLocationManager with allowsBackgroundLocationUpdates = true
+         as long as the location background mode is set and the user grants "Always" authorization. -->
+</dict>
+</plist>
