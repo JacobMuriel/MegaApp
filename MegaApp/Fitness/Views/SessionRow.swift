@@ -23,11 +23,14 @@ struct SessionRow: View {
                     .foregroundStyle(Theme.Fitness.primaryAccent)
             }
 
-            // Center: type only (date is already the section header)
+            // Center: type + date inside the row
             VStack(alignment: .leading, spacing: 2) {
                 Text(session.activityTypeEnum.displayName)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Theme.Fitness.textPrimary)
+                Text(Format.date(session.date))
+                    .font(.caption)
+                    .foregroundStyle(Theme.Fitness.textSecondary)
                 // Optional rating dots
                 if let rating = session.rating, rating > 0 {
                     RatingDots(rating: rating)

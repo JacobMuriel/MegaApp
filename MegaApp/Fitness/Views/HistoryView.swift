@@ -22,12 +22,6 @@ struct HistoryView: View {
         return allSessions.filter { $0.activityType == rawValue }
     }
 
-    /// Sessions grouped by calendar day, descending.
-    private var groupedSessions: [(day: Date, sessions: [WorkoutSession])] {
-        let calendar = Calendar.current
-        let groups   = Dictionary(grouping: sessions) { calendar.startOfDay(for: $0.date) }
-        return groups.sorted { $0.key > $1.key }.map { (day: $0.key, sessions: $0.value) }
-    }
 
     // MARK: - Body
 
@@ -117,22 +111,18 @@ struct HistoryView: View {
 
     private var sessionList: some View {
         List {
-            ForEach(groupedSessions, id: \.day) { group in
-                Section(header: Text(Format.relativeDayHeader(group.day))) {
-                    ForEach(group.sessions) { session in
-                        NavigationLink {
-                            SessionDetailView(session: session, recovery: recovery)
-                        } label: {
-                            SessionRow(session: session)
-                        }
-                    }
-                    .onDelete { offsets in
-                        deleteSession(at: offsets, in: group.sessions)
-                    }
+            ForEach(sessions) { session in
+                NavigationLink {
+                    SessionDetailView(session: session, recovery: recovery)
+                } label: {
+                    SessionRow(session: session)
                 }
             }
+            .onDelete { offsets in
+                deleteSession(at: offsets, in: sessions)
+            }
         }
-        .listStyle(.insetGrouped)
+        .listStyle(.plain)
         .animation(.default, value: filter)
     }
 
@@ -192,9 +182,9 @@ struct HistoryView: View {
 
     // MARK: - Delete
 
-    private func deleteSession(at offsets: IndexSet, in group: [WorkoutSession]) {
+    private func deleteSession(at offsets: IndexSet, in list: [WorkoutSession]) {
         for idx in offsets {
-            let session  = group[idx]
+            let session  = list[idx]
             let snapshot = SessionSnapshot(from: session)
             recovery.registerDeleted(snapshot: snapshot)
             modelContext.delete(session)

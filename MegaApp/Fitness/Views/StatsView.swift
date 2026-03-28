@@ -5,8 +5,9 @@ import Charts
 // MARK: - StatsView
 //
 // Two Swift Charts (iOS 16+):
-//   • Distance per run (bar chart)
-//   • Pace per run (line chart, outdoor runs only)
+//   • Distance per session (bar chart, tappable)
+//   • Pace trend (line chart, all runs — outdoor + treadmill)
+// Runs/Bike toggle at top separates the two activity groups.
 // A segmented picker controls the window size (last 5 / 10 / 20 / 50 sessions).
 
 struct StatsView: View {
@@ -14,6 +15,7 @@ struct StatsView: View {
 
     @State private var windowSize: Int = 20
     @State private var chartMode: ChartMode = .runs
+    @State private var selectedBarIndex: Int? = nil
 
     enum ChartMode: String, CaseIterable {
         case runs = "Runs"
@@ -44,22 +46,38 @@ struct StatsView: View {
         chartMode == .runs ? runSessions : bikeSessions
     }
 
-    private var outdoorRunSessions: [WorkoutSession] {
+    // All runs (outdoor + treadmill) with pace — used for pace trend chart
+    private var paceSessions: [WorkoutSession] {
         allSessions
-            .filter { $0.activityType == ActivityType.outdoorRun.rawValue && $0.paceMinPerMile != nil }
+            .filter {
+                ($0.activityType == ActivityType.outdoorRun.rawValue ||
+                 $0.activityType == ActivityType.treadmill.rawValue)
+                && $0.paceMinPerMile != nil
+            }
             .suffix(windowSize)
     }
 
-    // MARK: Personal records (all time)
+    // MARK: Personal records (runs and bike kept separate)
 
     private var longestRun: WorkoutSession? {
-        allSessions.max { ($0.distanceMiles ?? 0) < ($1.distanceMiles ?? 0) }
+        allSessions
+            .filter {
+                $0.activityType == ActivityType.outdoorRun.rawValue ||
+                $0.activityType == ActivityType.treadmill.rawValue
+            }
+            .max { ($0.distanceMiles ?? 0) < ($1.distanceMiles ?? 0) }
     }
+
     private var fastestPace: WorkoutSession? {
         allSessions
-            .filter { $0.paceMinPerMile != nil }
-            .min    { ($0.paceMinPerMile ?? 99) < ($1.paceMinPerMile ?? 99) }
+            .filter {
+                ($0.activityType == ActivityType.outdoorRun.rawValue ||
+                 $0.activityType == ActivityType.treadmill.rawValue)
+                && $0.paceMinPerMile != nil
+            }
+            .min { ($0.paceMinPerMile ?? 99) < ($1.paceMinPerMile ?? 99) }
     }
+
     private var longestBike: WorkoutSession? {
         allSessions
             .filter { $0.activityType == ActivityType.bike.rawValue }
@@ -78,6 +96,7 @@ struct StatsView: View {
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal, Theme.Spacing.md)
+                .onChange(of: chartMode) { _, _ in selectedBarIndex = nil }
 
                 // Window picker
                 Picker("Last", selection: $windowSize) {
@@ -88,14 +107,15 @@ struct StatsView: View {
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal, Theme.Spacing.md)
+                .onChange(of: windowSize) { _, _ in selectedBarIndex = nil }
 
                 // Distance chart
                 if !activeSessions.isEmpty {
                     distanceChart
                 }
 
-                // Pace chart (outdoor runs only, not shown for bike)
-                if chartMode == .runs && outdoorRunSessions.count >= 2 {
+                // Pace chart — all runs (outdoor + treadmill), not shown for bike
+                if chartMode == .runs && paceSessions.count >= 2 {
                     paceChart
                 }
 
@@ -111,7 +131,7 @@ struct StatsView: View {
         .navigationTitle("Stats")
     }
 
-    // MARK: - Distance chart
+    // MARK: - Distance chart (tappable bars)
 
     private var distanceChart: some View {
         VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
@@ -122,15 +142,22 @@ struct StatsView: View {
 
             Chart(Array(activeSessions.enumerated()), id: \.offset) { idx, session in
                 BarMark(
-                    x: .value("Run", idx + 1),
+                    x: .value("Session", idx + 1),
                     y: .value("Miles", session.distanceMiles ?? 0)
                 )
-                .foregroundStyle(
-                    session.activityType == ActivityType.outdoorRun.rawValue
-                        ? Theme.Fitness.primaryAccent
-                        : Theme.Fitness.primaryAccent.opacity(0.5)
-                )
+                .foregroundStyle(barColor(for: session))
                 .cornerRadius(4)
+                .annotation(position: .top, alignment: .center) {
+                    if selectedBarIndex == idx, let dist = session.distanceMiles {
+                        Text(Format.decimal(dist, places: 2) + " mi")
+                            .font(.caption2.bold())
+                            .foregroundStyle(Theme.Fitness.primaryAccent)
+                            .padding(.horizontal, 5)
+                            .padding(.vertical, 3)
+                            .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 4))
+                            .shadow(color: .black.opacity(0.12), radius: 3, x: 0, y: 1)
+                    }
+                }
             }
             .chartXAxis(.hidden)
             .chartYAxis {
@@ -139,7 +166,23 @@ struct StatsView: View {
                     AxisValueLabel { Text(Format.decimal(val.as(Double.self) ?? 0, places: 1) + " mi").font(.caption) }
                 }
             }
-            .frame(height: 160)
+            .chartOverlay { proxy in
+                GeometryReader { geo in
+                    Rectangle().fill(.clear).contentShape(Rectangle())
+                        .gesture(
+                            DragGesture(minimumDistance: 0)
+                                .onChanged { value in
+                                    let x = value.location.x - geo[proxy.plotAreaFrame].origin.x
+                                    if let barNum: Int = proxy.value(atX: x) {
+                                        let idx = max(0, min(activeSessions.count - 1, barNum - 1))
+                                        selectedBarIndex = idx
+                                    }
+                                }
+                                .onEnded { _ in selectedBarIndex = nil }
+                        )
+                }
+            }
+            .frame(height: 180)
             .padding(.horizontal, Theme.Spacing.md)
         }
         .padding(.vertical, Theme.Spacing.md)
@@ -147,16 +190,28 @@ struct StatsView: View {
         .padding(.horizontal, Theme.Spacing.md)
     }
 
-    // MARK: - Pace chart
+    private func barColor(for session: WorkoutSession) -> Color {
+        switch chartMode {
+        case .runs:
+            // Outdoor runs: full opacity; treadmill: slightly faded
+            return session.activityType == ActivityType.outdoorRun.rawValue
+                ? Theme.Fitness.primaryAccent
+                : Theme.Fitness.primaryAccent.opacity(0.55)
+        case .bike:
+            return Theme.Fitness.secondaryAccent
+        }
+    }
+
+    // MARK: - Pace chart (all runs)
 
     private var paceChart: some View {
         VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
-            Text("Pace Trend (Outdoor Runs)")
+            Text("Pace Trend (All Runs)")
                 .font(.headline)
                 .foregroundStyle(Theme.Fitness.textPrimary)
                 .padding(.horizontal, Theme.Spacing.md)
 
-            Chart(Array(outdoorRunSessions.enumerated()), id: \.offset) { idx, session in
+            Chart(Array(paceSessions.enumerated()), id: \.offset) { idx, session in
                 if let pace = session.paceMinPerMile {
                     LineMark(
                         x: .value("Run", idx + 1),
@@ -168,7 +223,11 @@ struct StatsView: View {
                         x: .value("Run", idx + 1),
                         y: .value("min/mi", pace)
                     )
-                    .foregroundStyle(Theme.Fitness.primaryAccent)
+                    .foregroundStyle(
+                        session.activityType == ActivityType.outdoorRun.rawValue
+                            ? Theme.Fitness.primaryAccent
+                            : Theme.Fitness.primaryAccent.opacity(0.55)
+                    )
                     .symbolSize(30)
                 }
             }
@@ -183,7 +242,7 @@ struct StatsView: View {
                     }
                 }
             }
-            // Inverted Y: lower pace = faster, so smaller values should appear higher
+            // Inverted Y: lower pace = faster, so smaller values appear higher
             .chartYScale(domain: .automatic(reversed: true))
             .frame(height: 160)
             .padding(.horizontal, Theme.Spacing.md)
