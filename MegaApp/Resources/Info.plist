@@ -20,6 +20,9 @@
     <array>
         <string>UIInterfaceOrientationPortrait</string>
     </array>
+    <!-- Suppress "all orientations must be supported" warning — this is a portrait-only app -->
+    <key>UIRequiresFullScreen</key>
+    <true/>
     <!-- Background modes: location keeps GPS running when screen is off; audio lets AVSpeechSynthesizer announce mile markers -->
     <key>UIBackgroundModes</key>
     <array>
