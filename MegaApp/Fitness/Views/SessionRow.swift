@@ -23,14 +23,11 @@ struct SessionRow: View {
                     .foregroundStyle(Theme.Fitness.primaryAccent)
             }
 
-            // Center: type + date
+            // Center: type only (date is already the section header)
             VStack(alignment: .leading, spacing: 2) {
                 Text(session.activityTypeEnum.displayName)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Theme.Fitness.textPrimary)
-                Text(Format.date(session.date))
-                    .font(.caption)
-                    .foregroundStyle(Theme.Fitness.textSecondary)
                 // Optional rating dots
                 if let rating = session.rating, rating > 0 {
                     RatingDots(rating: rating)
@@ -40,14 +37,14 @@ struct SessionRow: View {
 
             Spacer()
 
-            // Right: primary metric + duration
+            // Right: time → distance → calories
             VStack(alignment: .trailing, spacing: 2) {
                 Text(Format.duration(session.durationSeconds))
                     .font(.subheadline.weight(.semibold).monospacedDigit())
                     .foregroundStyle(Theme.Fitness.textPrimary)
 
-                if let metric = primaryMetricText {
-                    Text(metric)
+                if let dist = session.distanceMiles {
+                    Text(Format.decimal(dist, places: 2) + " mi")
                         .font(.caption.monospacedDigit())
                         .foregroundStyle(Theme.Fitness.textSecondary)
                 }
@@ -61,22 +58,6 @@ struct SessionRow: View {
         .padding(.vertical, 4)
     }
 
-    // MARK: Primary metric per activity
-
-    private var primaryMetricText: String? {
-        switch session.activityTypeEnum {
-        case .outdoorRun:
-            if let pace = session.paceMinPerMile { return Format.pace(pace) }
-            if let dist = session.distanceMiles  { return Format.decimal(dist, places: 2) + " mi" }
-            return nil
-        case .treadmill:
-            if let spd = session.computedAvgSpeedMph { return Format.decimal(spd, places: 1) + " mph" }
-            return nil
-        case .bike:
-            if let watts = session.avgWatts { return "\(watts) W" }
-            return nil
-        }
-    }
 }
 
 // MARK: - Rating dot strip

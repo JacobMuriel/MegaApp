@@ -13,13 +13,35 @@ struct StatsView: View {
     @Query(sort: \WorkoutSession.date, order: .forward) private var allSessions: [WorkoutSession]
 
     @State private var windowSize: Int = 20
+    @State private var chartMode: ChartMode = .runs
+
+    enum ChartMode: String, CaseIterable {
+        case runs = "Runs"
+        case bike = "Bike"
+    }
 
     // MARK: Derived data
 
+    // Outdoor runs + treadmill sessions with distance
     private var runSessions: [WorkoutSession] {
         allSessions
-            .filter { $0.distanceMiles != nil && $0.durationSeconds > 0 }
+            .filter {
+                ($0.activityType == ActivityType.outdoorRun.rawValue ||
+                 $0.activityType == ActivityType.treadmill.rawValue)
+                && $0.distanceMiles != nil && $0.durationSeconds > 0
+            }
             .suffix(windowSize)
+    }
+
+    // Bike sessions with distance
+    private var bikeSessions: [WorkoutSession] {
+        allSessions
+            .filter { $0.activityType == ActivityType.bike.rawValue && $0.distanceMiles != nil && $0.durationSeconds > 0 }
+            .suffix(windowSize)
+    }
+
+    private var activeSessions: [WorkoutSession] {
+        chartMode == .runs ? runSessions : bikeSessions
     }
 
     private var outdoorRunSessions: [WorkoutSession] {
@@ -48,6 +70,15 @@ struct StatsView: View {
         ScrollView {
             VStack(spacing: Theme.Spacing.lg) {
 
+                // Runs / Bike toggle
+                Picker("Activity", selection: $chartMode) {
+                    ForEach(ChartMode.allCases, id: \.self) { mode in
+                        Text(mode.rawValue).tag(mode)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal, Theme.Spacing.md)
+
                 // Window picker
                 Picker("Last", selection: $windowSize) {
                     Text("5").tag(5)
@@ -59,12 +90,12 @@ struct StatsView: View {
                 .padding(.horizontal, Theme.Spacing.md)
 
                 // Distance chart
-                if !runSessions.isEmpty {
+                if !activeSessions.isEmpty {
                     distanceChart
                 }
 
-                // Pace chart (outdoor runs only)
-                if outdoorRunSessions.count >= 2 {
+                // Pace chart (outdoor runs only, not shown for bike)
+                if chartMode == .runs && outdoorRunSessions.count >= 2 {
                     paceChart
                 }
 
@@ -89,7 +120,7 @@ struct StatsView: View {
                 .foregroundStyle(Theme.Fitness.textPrimary)
                 .padding(.horizontal, Theme.Spacing.md)
 
-            Chart(Array(runSessions.enumerated()), id: \.offset) { idx, session in
+            Chart(Array(activeSessions.enumerated()), id: \.offset) { idx, session in
                 BarMark(
                     x: .value("Run", idx + 1),
                     y: .value("Miles", session.distanceMiles ?? 0)
