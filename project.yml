@@ -1,7 +1,7 @@
 name: MegaApp
 
 options:
-  bundleIdPrefix: com.megaapp
+  bundleIdPrefix: com.jacobmuriel
   deploymentTarget:
     iOS: "18.0"
   createIntermediateGroups: true
@@ -35,13 +35,15 @@ targets:
           - "Resources/MegaApp.entitlements"
     resources:
       - path: MegaApp/Resources/Assets.xcassets
+      - path: MegaApp/fitness-export.json
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.megaapp.MegaApp
+        PRODUCT_BUNDLE_IDENTIFIER: com.jacobmuriel.MegaApp
         INFOPLIST_FILE: MegaApp/Resources/Info.plist
         CODE_SIGN_ENTITLEMENTS: MegaApp/Resources/MegaApp.entitlements
         GENERATE_INFOPLIST_FILE: NO
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         # Suppress warnings about missing provisioning during local sim builds
         CODE_SIGNING_REQUIRED: NO
-        CODE_SIGN_IDENTITY: ""
+        CODE_SIGN_IDENTITY: "Apple Development"
+        CODE_SIGN_STYLE: Automatic

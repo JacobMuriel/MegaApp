@@ -17,6 +17,7 @@
 		1EDAB66A901BAEDADA0BA04B /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E878F4AB91AAA63D450DC723 /* StatsView.swift */; };
 		2040F1812D431CEE2E54A05E /* PantryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6630FD3B9B8180A7754A3F /* PantryView.swift */; };
 		2636D0E9CDB8ECD7821142F2 /* FitnessShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376D7E2C8B6090BF51900D45 /* FitnessShell.swift */; };
+		2EC45EE1E30C7387828A3202 /* DataImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011103E4BF83A2BA6DC6C99C /* DataImportService.swift */; };
 		3154AF711A61E1518C6CD7E2 /* OutdoorRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A19D764CF6FD6ADAD75AFCE /* OutdoorRunView.swift */; };
 		41B0518F374F989553A411AD /* WorkoutSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA9117E832FE1CE0997144 /* WorkoutSession.swift */; };
 		63192022729FE52506A9D745 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25C9970BFD7AE921ED8667B2 /* Assets.xcassets */; };
@@ -35,6 +36,7 @@
 		B87F5058B716DCB4B4785C32 /* AislesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7381B8D7B7A76C560C048A /* AislesView.swift */; };
 		BC83396D7A61B3936A76CB6F /* CartlyShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CEC40FDD58DAE7C46051CC6 /* CartlyShell.swift */; };
 		C2BC155A2D3BB8DC27BB5656 /* CartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3879A39A25737B0F1D40E4 /* CartViewModel.swift */; };
+		CAA78F73FE4DD9EB1F2D5ECC /* fitness-export.json in Resources */ = {isa = PBXBuildFile; fileRef = 02445563F9E17A75AFC0D958 /* fitness-export.json */; };
 		CB54C408367B7C523A6B763F /* RunRecoveryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9042B40EF0DFABDDDEE32C17 /* RunRecoveryManager.swift */; };
 		DB50CE29FCF603F5C9735D0F /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EDD54C69956F2D1690402 /* PlanViewModel.swift */; };
 		DE2C9E101B604D3FD101F94F /* CartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB15A65D715B0C99DEEA49E2 /* CartItem.swift */; };
@@ -44,6 +46,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		011103E4BF83A2BA6DC6C99C /* DataImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataImportService.swift; sourceTree = "<group>"; };
+		02445563F9E17A75AFC0D958 /* fitness-export.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "fitness-export.json"; sourceTree = "<group>"; };
 		0E264135FBC9FDEEC6582536 /* OpenAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
 		239613760CF5D1AB6E219602 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		25C9970BFD7AE921ED8667B2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -68,7 +72,7 @@
 		BB3879A39A25737B0F1D40E4 /* CartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewModel.swift; sourceTree = "<group>"; };
 		BFEA9117E832FE1CE0997144 /* WorkoutSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSession.swift; sourceTree = "<group>"; };
 		C1FA9EF3671627AD131C6670 /* PlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanView.swift; sourceTree = "<group>"; };
-		C5CC0EF83C712EEB0B00DA01 /* MegaApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MegaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5CC0EF83C712EEB0B00DA01 /* MegaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MegaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CA68827F70F31CFD586AD1 /* SessionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRow.swift; sourceTree = "<group>"; };
 		E664970D3B9AAFEF1A588F7B /* Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
 		E878F4AB91AAA63D450DC723 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
@@ -79,7 +83,7 @@
 		F9EDE4876034DFD9FC664A8B /* ShakeToRecoverModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeToRecoverModifier.swift; sourceTree = "<group>"; };
 		FA82922D4F1F2DEA2706AC3E /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
 		FF778DAFABA7B4875E1D37A5 /* CartlyModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartlyModels.swift; sourceTree = "<group>"; };
-		"TEMP_29E02C85-1DD2-4E72-8D21-6DA0C67C6D44" /* MegaApp.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MegaApp.xcconfig; sourceTree = "<group>"; };
+		"TEMP_1185EFD6-6B11-4178-BE0E-72DBEACEEF50" /* MegaApp.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MegaApp.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -99,6 +103,14 @@
 				3E359C2B5DB673B73A6E66FA /* Services */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		27F5DBC72F781540000A9ECF /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				"TEMP_1185EFD6-6B11-4178-BE0E-72DBEACEEF50" /* MegaApp.xcconfig */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		3E359C2B5DB673B73A6E66FA /* Services */ = {
@@ -155,6 +167,7 @@
 			children = (
 				B3401C75EC9183FCA62596A7 /* MegaApp */,
 				589BF5AF377F05912C6ABE2C /* Products */,
+				27F5DBC72F781540000A9ECF /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -225,6 +238,7 @@
 		B3401C75EC9183FCA62596A7 /* MegaApp */ = {
 			isa = PBXGroup;
 			children = (
+				02445563F9E17A75AFC0D958 /* fitness-export.json */,
 				8C6D133E4F8529EC8BBE2802 /* App */,
 				82EDCD952DA51EA4D42B3197 /* Cartly */,
 				5E68F12BB2D20FDFB9DDCC54 /* Fitness */,
@@ -237,6 +251,7 @@
 		D4F87E243DAE5DA52607E725 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				011103E4BF83A2BA6DC6C99C /* DataImportService.swift */,
 				386C03A3CD0F3E8EE31A3560 /* OutdoorRunTracker.swift */,
 				9042B40EF0DFABDDDEE32C17 /* RunRecoveryManager.swift */,
 			);
@@ -250,14 +265,6 @@
 				F9EDE4876034DFD9FC664A8B /* ShakeToRecoverModifier.swift */,
 			);
 			path = Utilities;
-			sourceTree = "<group>";
-		};
-		"TEMP_75560F98-7B6A-4389-9A0E-02375EA15505" /* MegaApp */ = {
-			isa = PBXGroup;
-			children = (
-				"TEMP_29E02C85-1DD2-4E72-8D21-6DA0C67C6D44" /* MegaApp.xcconfig */,
-			);
-			path = MegaApp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -291,7 +298,7 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					A42066B8CD191C6694143593 = {
-						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -320,6 +327,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				63192022729FE52506A9D745 /* Assets.xcassets in Resources */,
+				CAA78F73FE4DD9EB1F2D5ECC /* fitness-export.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +346,7 @@
 				185DA20257B7B7BA1A9B891E /* CartlyModels.swift in Sources */,
 				BC83396D7A61B3936A76CB6F /* CartlyShell.swift in Sources */,
 				EBE34D6B21217693F1FB8340 /* ContentView.swift in Sources */,
+				2EC45EE1E30C7387828A3202 /* DataImportService.swift in Sources */,
 				2636D0E9CDB8ECD7821142F2 /* FitnessShell.swift in Sources */,
 				1E02C1E74F8AAADC3386C8CF /* Format.swift in Sources */,
 				0F9919E7FDF09221C55748C2 /* HistoryView.swift in Sources */,
@@ -371,7 +380,7 @@
 /* Begin XCBuildConfiguration section */
 		003618520F18D06E54EF7BFC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = "TEMP_29E02C85-1DD2-4E72-8D21-6DA0C67C6D44" /* MegaApp.xcconfig */;
+			baseConfigurationReference = "TEMP_1185EFD6-6B11-4178-BE0E-72DBEACEEF50" /* MegaApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -436,7 +445,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGNING_REQUIRED = NO;
 				CODE_SIGN_ENTITLEMENTS = MegaApp/Resources/MegaApp.entitlements;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G384ML6WH3;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = MegaApp/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
@@ -444,7 +455,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.megaapp.MegaApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jacobmuriel.MegaApp;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -452,7 +463,7 @@
 		};
 		ED203718620082E42CB3F6F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = "TEMP_29E02C85-1DD2-4E72-8D21-6DA0C67C6D44" /* MegaApp.xcconfig */;
+			baseConfigurationReference = "TEMP_1185EFD6-6B11-4178-BE0E-72DBEACEEF50" /* MegaApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -524,7 +535,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGNING_REQUIRED = NO;
 				CODE_SIGN_ENTITLEMENTS = MegaApp/Resources/MegaApp.entitlements;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G384ML6WH3;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = MegaApp/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
@@ -532,7 +545,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.megaapp.MegaApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jacobmuriel.MegaApp;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

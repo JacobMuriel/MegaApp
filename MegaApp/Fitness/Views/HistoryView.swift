@@ -13,6 +13,7 @@ struct HistoryView: View {
     @State private var showEditor        = false
     @State private var showOutdoorRun    = false
     @State private var selectedTemplate: SessionTemplate? = nil
+    @State private var importAlertMessage: String?       = nil
 
     // MARK: Filtered data
 
@@ -69,6 +70,13 @@ struct HistoryView: View {
                     Image(systemName: "plus")
                 }
             }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    runImport()
+                } label: {
+                    Image(systemName: "square.and.arrow.down")
+                }
+            }
         }
         .sheet(isPresented: $showEditor) {
             SessionEditorView(mode: .create(template: selectedTemplate))
@@ -81,6 +89,14 @@ struct HistoryView: View {
             withAnimation {
                 _ = recovery.recoverIfPossible(in: modelContext)
             }
+        }
+        .alert("Import Sessions", isPresented: .init(
+            get: { importAlertMessage != nil },
+            set: { if !$0 { importAlertMessage = nil } }
+        )) {
+            Button("OK") { importAlertMessage = nil }
+        } message: {
+            Text(importAlertMessage ?? "")
         }
     }
 
@@ -156,6 +172,22 @@ struct HistoryView: View {
         .padding(Theme.Spacing.md)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: Theme.CornerRadius.card))
         .shadow(color: .black.opacity(0.12), radius: 8, x: 0, y: 4)
+    }
+
+    // MARK: - Import
+
+    private func runImport() {
+        do {
+            let result = try DataImportService.importFromBundle(into: modelContext)
+            if result.inserted == 0 {
+                importAlertMessage = "Already up to date — \(result.skipped) session\(result.skipped == 1 ? "" : "s") already imported."
+            } else {
+                importAlertMessage = "Imported \(result.inserted) session\(result.inserted == 1 ? "" : "s")."
+                    + (result.skipped > 0 ? " \(result.skipped) skipped (duplicates)." : "")
+            }
+        } catch {
+            importAlertMessage = "Import failed: \(error.localizedDescription)"
+        }
     }
 
     // MARK: - Delete
